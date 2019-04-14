@@ -2,7 +2,7 @@ properties([buildDiscarder(logRotator(numToKeepStr: '8'))])
 
 def label = "petclinic-${UUID.randomUUID().toString()}"
 
-def revision = "2.1.3-SNAPSHOT"
+def revision = "2.1.3-compose-SNAPSHOT"
 
 def credentials = [usernamePassword(credentialsId: 'jcsirot.docker.devoxxfr.chelonix.org', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]
 
