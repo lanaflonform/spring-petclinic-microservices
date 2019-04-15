@@ -40,6 +40,14 @@ spec:
         sh "docker build -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-discovery-server:${revision} -f spring-petclinic-discovery-server/Dockerfile --build-arg BASE_ID=${BUILD_TAG} --build-arg REVISION=${revision} --build-arg EXPOSED_PORT=8761 ."
         sh "docker build -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-api-gateway:${revision} -f spring-petclinic-api-gateway/Dockerfile --build-arg BASE_ID=${BUILD_TAG} --build-arg REVISION=${revision} --build-arg EXPOSED_PORT=8081 ."
         sh "docker build -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-hystrix-dashboard:${revision} -f spring-petclinic-hystrix-dashboard/Dockerfile --build-arg BASE_ID=${BUILD_TAG} --build-arg REVISION=${revision} --build-arg EXPOSED_PORT=7979 ."
+
+        dir("docker/grafana") {
+          sh "docker build -f Dockerfile -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-grafana:${revision} ."
+        }
+        dir("docker/grafana") {
+          sh "docker build -f Dockerfile -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-prometheus:${revision} ."
+        }
+
       }
       stage("Sonar Analysis") {
         withSonarQubeEnv('sonarqube') {
