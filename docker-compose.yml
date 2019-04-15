@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   config-server:
-    image: docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-config-server:2.1.3-SNAPSHOT
+    image: docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-config-server:2.1.3-compose-SNAPSHOT
     deploy:
       resources:
         limits:
@@ -11,7 +11,7 @@ services:
     #  - 8888:8888
 
   discovery-server:
-    image: docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-discovery-server:2.1.3-SNAPSHOT
+    image: docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-discovery-server:2.1.3-compose-SNAPSHOT
     deploy:
       resources:
         limits:
@@ -23,7 +23,7 @@ services:
      - 8761:8761
 
   customers-service:
-    image: docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-customers-service:2.1.3-SNAPSHOT
+    image: docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-customers-service:2.1.3-compose-SNAPSHOT
     deploy:
       resources:
         limits:
@@ -36,7 +36,7 @@ services:
     # - 8081:8081
 
   visits-service:
-    image: docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-visits-service:2.1.3-SNAPSHOT
+    image: docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-visits-service:2.1.3-compose-SNAPSHOT
     deploy:
       resources:
         limits:
@@ -49,7 +49,7 @@ services:
     #  - 8082:8082
 
   vets-service:
-    image: docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-vets-service:2.1.3-SNAPSHOT
+    image: docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-vets-service:2.1.3-compose-SNAPSHOT
     deploy:
       resources:
         limits:
@@ -62,7 +62,7 @@ services:
     #  - 8083:8083
 
   api-gateway:
-    image: docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-api-gateway:2.1.3-SNAPSHOT
+    image: docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-api-gateway:2.1.3-compose-SNAPSHOT
     deploy:
       resources:
         limits:
@@ -86,7 +86,7 @@ services:
     #  - 9411:9411
 
   admin-server:
-    image: docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-admin-server:2.1.3-SNAPSHOT
+    image: docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-admin-server:2.1.3-compose-SNAPSHOT
     deploy:
       resources:
         limits:
@@ -99,7 +99,7 @@ services:
      - 9090:9090
 
   hystrix-dashboard:
-    image: docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-hystrix-dashboard:2.1.3-SNAPSHOT
+    image: docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-hystrix-dashboard:2.1.3-compose-SNAPSHOT
     deploy:
       resources:
         limits:
