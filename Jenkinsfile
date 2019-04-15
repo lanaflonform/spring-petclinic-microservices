@@ -10,6 +10,8 @@ def credentials = [usernamePassword(credentialsId: 'jcsirot.docker.devoxxfr.chel
 
 def deptrackApiKey = [string(credentialsId: 'deptrackapikey', variable:'DEPTRACK_APIKEY')]
 
+def credentials = [usernamePassword(credentialsId: 'jcsirot.docker.devoxxfr.chelonix.org', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]
+
 podTemplate(label: label, yaml: """
 apiVersion: v1
 kind: Pod
@@ -51,7 +53,6 @@ spec:
         dir("docker/grafana") {
           sh "docker build -f Dockerfile -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-prometheus:${revision} ."
         }
-
       }
       stage("OWASP Dependency-Track") {
         withCredentials(deptrackApiKey) {        
