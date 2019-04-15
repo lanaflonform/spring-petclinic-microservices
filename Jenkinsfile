@@ -4,7 +4,7 @@ def label = "petclinic-${UUID.randomUUID().toString()}"
 
 def projectname = "spring-petclinic-microservices"
 
-def revision = "2.1.3-SNAPSHOT"
+def revision = env.BRANCH_NAME
 
 def credentials = [usernamePassword(credentialsId: 'jcsirot.docker.devoxxfr.chelonix.org', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]
 

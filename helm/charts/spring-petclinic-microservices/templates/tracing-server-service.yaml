@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: "2019-04-14T21:27:47Z"
+  labels:
+    component: tracing-server
+    app: petclinic
+  name: tracing-server
+spec:
+  ports:
+  - name: http9401
+    port: 9401
+    protocol: TCP
+    targetPort: 9401
+  selector:
+    component: tracing-server
+    app: petclinic
+  sessionAffinity: None
+  type: ClusterIP

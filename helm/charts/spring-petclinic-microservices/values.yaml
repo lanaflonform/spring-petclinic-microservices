@@ -1,0 +1,62 @@
+# Default values for spring-petclinic-microservices.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  # beware that the image tag will be grafanaTag:
+  # "{{ .Values.image.repository }}/microservicename:{{ .Values.image.tag }}"
+  repository: docker.devoxxfr.chelonix.org/jcsirot
+  tag: 2.1.3-SNAPSHOT
+  grafanaTag: toto
+  traccingTag: toto
+  prometheusTag: toto
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  adminServer:
+    type: LoadBalancer
+  apiGateway:
+    type: LoadBalancer
+
+
+ingress:
+  enabled: true
+  annotations: {}
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+      # nginx.ingress.kubernetes.io/auth-type: basic
+      # nginx.ingress.kubernetes.io/auth-secret: sysop
+      # nginx.ingress.kubernetes.io/auth-realm: "Authentication Required - ok"
+      # kubernetes.io/ingress.global-static-ip-name: petclinic-adm-ip
+      # networking.gke.io/managed-certificates: petclinic-adm.chart-example.local,petclinic.chart-example.local
+  hosts:
+    hostAdminServer : petclinic-adm.chart-example.local
+    hostApiGateway : petclinic.chart-example.local
+          
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+
+resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  limits:
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

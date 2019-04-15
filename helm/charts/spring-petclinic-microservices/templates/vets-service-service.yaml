@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: "2019-04-14T21:27:47Z"
+  labels:
+    component: vets-service
+    app: petclinic
+  name: vets-service
+spec:
+  ports:
+  - name: http8083
+    port: 8083
+    protocol: TCP
+    targetPort: 8083
+  selector:
+    component: vets-service
+    app: petclinic
+  sessionAffinity: None
+  type: ClusterIP
