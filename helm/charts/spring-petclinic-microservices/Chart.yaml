@@ -1,0 +1,5 @@
+apiVersion: v1
+appVersion: "2.1.3-compose-SNAPSHOT"
+description: A Helm chart for the spring-petclinic-microservices object in Kubernetes
+name: spring-petclinic-microservices
+version: 0.1.0

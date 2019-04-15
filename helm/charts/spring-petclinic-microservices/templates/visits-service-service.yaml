@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    component: visits-service
+    app: petclinic
+  name: visits-service
+spec:
+  ports:
+  - name: http8082
+    port: 8082
+    protocol: TCP
+    targetPort: 8082
+  selector:
+    component: visits-service
+    app: petclinic
+  sessionAffinity: None
+  type: ClusterIP

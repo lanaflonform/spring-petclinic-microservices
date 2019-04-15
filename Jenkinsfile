@@ -2,7 +2,13 @@ properties([buildDiscarder(logRotator(numToKeepStr: '8'))])
 
 def label = "petclinic-${UUID.randomUUID().toString()}"
 
-def revision = "2.1.3-SNAPSHOT"
+def projectname = "spring-petclinic-microservices"
+
+def revision = env.BRANCH_NAME
+
+def credentials = [usernamePassword(credentialsId: 'jcsirot.docker.devoxxfr.chelonix.org', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]
+
+def deptrackApiKey = [string(credentialsId: 'deptrackapikey', variable:'DEPTRACK_APIKEY')]
 
 def credentials = [usernamePassword(credentialsId: 'jcsirot.docker.devoxxfr.chelonix.org', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]
 
@@ -47,7 +53,11 @@ spec:
         dir("docker/grafana") {
           sh "docker build -f Dockerfile -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-prometheus:${revision} ."
         }
-
+      }
+      stage("OWASP Dependency-Track") {
+        withCredentials(deptrackApiKey) {        
+          sh "docker build -f deptrack.Dockerfile --build-arg BASE_ID=${BUILD_TAG} --build-arg REVISION=${revision} --build-arg DEPTRACK_MAVEN_GOAL='org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom' --build-arg DEPTRACK_HOST_URL=${env.DEPTRACK_HOST_URL} --build-arg DEPTRACK_PROJECT_NAME=${projectname} --build-arg DEPTRACK_APIKEY=${DEPTRACK_APIKEY} ."
+        }
       }
       stage("Sonar Analysis") {
         withSonarQubeEnv('sonarqube') {
