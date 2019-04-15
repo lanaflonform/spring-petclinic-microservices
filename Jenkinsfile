@@ -78,6 +78,19 @@ spec:
           sh "docker push docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-prometheus:${dockerTag}"
         }
       }
+      if (env.TAG_NAME != null) {
+        if (env.TAG_NAME ==~ /v[0-9]\.[0-9]\.[0-9]/) {
+          stage ("Deploy to Prod") {
+            echo "Deploying app to production"
+          }
+        } else {
+          stage ("Deploy to Preprod") {
+            echo "Deploying app to pre-production"
+          }
+        }
+      } else {
+        echo "Skipping app deployment since no tag has been found"
+      }
     }
   }
 }
