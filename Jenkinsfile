@@ -108,7 +108,7 @@ spec:
           wget -qO- https://kubernetes-helm.storage.googleapis.com/helm-v2.13.1-linux-amd64.tar.gz | tar xvz
           ./linux-amd64/helm version
           echo "targetNS:${targetNS}"
-          ./linux-amd64/helm upgrade ${targetNS} helm/charts/spring-petclinic-microservices -f deployment-configs/${targetNS}/values.yaml --namespace=petclinic-${targetNS} --set image.tag=${dockerTag} --set \"image.changeCause=jenkins $(date)\"
+          ./linux-amd64/helm upgrade ${targetNS} helm/charts/spring-petclinic-microservices -f deployment-configs/${targetNS}/values.yaml --namespace=petclinic-${targetNS} --set image.tag=${dockerTag} --set image.changeCause=$(date +%y%m%d%H%M%S)
         """
         echo "Skipping app deployment since no tag has been found"
       }
