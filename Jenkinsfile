@@ -4,13 +4,12 @@ def label = "petclinic-${UUID.randomUUID().toString()}"
 
 def projectname = "spring-petclinic-microservices"
 
-def revision = env.BRANCH_NAME
+def revision = "2.1.3-SNAPSHOT"
+def dockerTag = env.BRANCH_NAME
 
 def credentials = [usernamePassword(credentialsId: 'jcsirot.docker.devoxxfr.chelonix.org', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]
 
 def deptrackApiKey = [string(credentialsId: 'deptrackapikey', variable:'DEPTRACK_APIKEY')]
-
-def credentials = [usernamePassword(credentialsId: 'jcsirot.docker.devoxxfr.chelonix.org', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]
 
 podTemplate(label: label, yaml: """
 apiVersion: v1
@@ -38,20 +37,20 @@ spec:
         sh "docker version"
         sh "docker build -t builder:${BUILD_TAG} --target builder --build-arg REVISION=${revision} ."
         sh "docker build -t base:${BUILD_TAG} --target base --build-arg REVISION=${revision} ."
-        sh "docker build -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-admin-server:${revision} -f spring-petclinic-admin-server/Dockerfile --build-arg BASE_ID=${BUILD_TAG} --build-arg REVISION=${revision} --build-arg EXPOSED_PORT=9090 ."
-        sh "docker build -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-customers-service:${revision} -f spring-petclinic-customers-service/Dockerfile --build-arg BASE_ID=${BUILD_TAG} --build-arg REVISION=${revision} --build-arg EXPOSED_PORT=8081 ."
-        sh "docker build -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-vets-service:${revision} -f spring-petclinic-vets-service/Dockerfile --build-arg BASE_ID=${BUILD_TAG} --build-arg REVISION=${revision} --build-arg EXPOSED_PORT=8081 ."
-        sh "docker build -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-visits-service:${revision} -f spring-petclinic-visits-service/Dockerfile --build-arg BASE_ID=${BUILD_TAG} --build-arg REVISION=${revision} --build-arg EXPOSED_PORT=8081 ."
-        sh "docker build -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-config-server:${revision} -f spring-petclinic-config-server/Dockerfile --build-arg BASE_ID=${BUILD_TAG} --build-arg REVISION=${revision} --build-arg EXPOSED_PORT=8888 ."
-        sh "docker build -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-discovery-server:${revision} -f spring-petclinic-discovery-server/Dockerfile --build-arg BASE_ID=${BUILD_TAG} --build-arg REVISION=${revision} --build-arg EXPOSED_PORT=8761 ."
-        sh "docker build -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-api-gateway:${revision} -f spring-petclinic-api-gateway/Dockerfile --build-arg BASE_ID=${BUILD_TAG} --build-arg REVISION=${revision} --build-arg EXPOSED_PORT=8081 ."
-        sh "docker build -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-hystrix-dashboard:${revision} -f spring-petclinic-hystrix-dashboard/Dockerfile --build-arg BASE_ID=${BUILD_TAG} --build-arg REVISION=${revision} --build-arg EXPOSED_PORT=7979 ."
+        sh "docker build -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-admin-server:${dockerTag} -f spring-petclinic-admin-server/Dockerfile --build-arg BASE_ID=${BUILD_TAG} --build-arg REVISION=${revision} --build-arg EXPOSED_PORT=9090 ."
+        sh "docker build -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-customers-service:${dockerTag} -f spring-petclinic-customers-service/Dockerfile --build-arg BASE_ID=${BUILD_TAG} --build-arg REVISION=${revision} --build-arg EXPOSED_PORT=8081 ."
+        sh "docker build -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-vets-service:${dockerTag} -f spring-petclinic-vets-service/Dockerfile --build-arg BASE_ID=${BUILD_TAG} --build-arg REVISION=${revision} --build-arg EXPOSED_PORT=8081 ."
+        sh "docker build -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-visits-service:${dockerTag} -f spring-petclinic-visits-service/Dockerfile --build-arg BASE_ID=${BUILD_TAG} --build-arg REVISION=${revision} --build-arg EXPOSED_PORT=8081 ."
+        sh "docker build -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-config-server:${dockerTag} -f spring-petclinic-config-server/Dockerfile --build-arg BASE_ID=${BUILD_TAG} --build-arg REVISION=${revision} --build-arg EXPOSED_PORT=8888 ."
+        sh "docker build -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-discovery-server:${dockerTag} -f spring-petclinic-discovery-server/Dockerfile --build-arg BASE_ID=${BUILD_TAG} --build-arg REVISION=${revision} --build-arg EXPOSED_PORT=8761 ."
+        sh "docker build -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-api-gateway:${dockerTag} -f spring-petclinic-api-gateway/Dockerfile --build-arg BASE_ID=${BUILD_TAG} --build-arg REVISION=${revision} --build-arg EXPOSED_PORT=8081 ."
+        sh "docker build -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-hystrix-dashboard:${dockerTag} -f spring-petclinic-hystrix-dashboard/Dockerfile --build-arg BASE_ID=${BUILD_TAG} --build-arg REVISION=${revision} --build-arg EXPOSED_PORT=7979 ."
 
         dir("docker/grafana") {
-          sh "docker build -f Dockerfile -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-grafana:${revision} ."
+          sh "docker build -f Dockerfile -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-grafana:${dockerTag} ."
         }
-        dir("docker/grafana") {
-          sh "docker build -f Dockerfile -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-prometheus:${revision} ."
+        dir("docker/prometheus") {
+          sh "docker build -f Dockerfile -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-prometheus:${dockerTag} ."
         }
       }
       stage("OWASP Dependency-Track") {
@@ -67,14 +66,16 @@ spec:
       stage("Push images") {
         withCredentials(credentials) {
           sh "docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD} docker.devoxxfr.chelonix.org"
-          sh "docker push docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-admin-server:${revision}"
-          sh "docker push docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-customers-service:${revision}"
-          sh "docker push docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-vets-service:${revision}"
-          sh "docker push docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-visits-service:${revision}"
-          sh "docker push docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-config-server:${revision}"
-          sh "docker push docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-discovery-server:${revision}"
-          sh "docker push docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-api-gateway:${revision}"
-          sh "docker push docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-hystrix-dashboard:${revision}"
+          sh "docker push docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-admin-server:${dockerTag}"
+          sh "docker push docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-customers-service:${dockerTag}"
+          sh "docker push docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-vets-service:${dockerTag}"
+          sh "docker push docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-visits-service:${dockerTag}"
+          sh "docker push docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-config-server:${dockerTag}"
+          sh "docker push docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-discovery-server:${dockerTag}"
+          sh "docker push docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-api-gateway:${dockerTag}"
+          sh "docker push docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-hystrix-dashboard:${dockerTag}"
+          sh "docker push docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-grafana:${dockerTag}"
+          sh "docker push docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-prometheus:${dockerTag}"
         }
       }
     }
