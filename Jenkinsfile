@@ -81,37 +81,45 @@ spec:
         }
       }
       if (env.TAG_NAME != null) {
+        /*
+        this is an upgrade deployment process
+        you need to install the helm chart first for "prod and preprod"
+        helm install --name petclinic-prod helm/charts/spring-petclinic-microservices \
+                     -f deployment-configs/preprod/values.yaml --namespace='petclinic-prod' \
+                     --set 'image.tag=2.1.3-SNAPSHOT'
+        */
         if (env.TAG_NAME ==~ /v[0-9]\.[0-9]\.[0-9]/) {
           stage ("Deploy to Prod") {
             echo "Deploying app to production"
+            getHelm()
             targetNS = "prod"
+            deploy(dockerTag, targetNS)
           }
         } else {
           stage ("Deploy to Preprod") {
             echo "Deploying app to pre-production"
+            getHelm()
+            deploy(dockerTag, targetNS)
           }
         }
       } else {
-        /*
-        this is an upgrade deployment process
-        you need to install the helm chart first for "prod and preprod"
-        helm install --name petclinic-preprod helm/charts/spring-petclinic-microservices \
-                     -f deployment-configs/preprod/values.yaml '--namespace=petclinic-preprod' \
-                     --set 'image.tag=2.1.3-compose-SNAPSHOT'
-        
-        */
-        sh """
-          wget -O kubectl https://storage.googleapis.com/kubernetes-release/release/v1.14.0/bin/linux/amd64/kubectl
-          chmod +x ./kubectl
-        """
-        sh """
-          wget -qO- https://kubernetes-helm.storage.googleapis.com/helm-v2.13.1-linux-amd64.tar.gz | tar xvz
-          ./linux-amd64/helm version
-          echo "targetNS:${targetNS}"
-          ./linux-amd64/helm upgrade ${targetNS} helm/charts/spring-petclinic-microservices -f deployment-configs/${targetNS}/values.yaml --namespace=petclinic-${targetNS} --set image.tag=${dockerTag} --set image.changeCause=jenkins-${BUILD_ID}
-        """
         echo "Skipping app deployment since no tag has been found"
       }
     }
   }
+}
+
+def getHelm() {
+  sh """
+    wget -O kubectl https://storage.googleapis.com/kubernetes-release/release/v1.14.0/bin/linux/amd64/kubectl
+    chmod +x ./kubectl
+    wget -qO- https://kubernetes-helm.storage.googleapis.com/helm-v2.13.1-linux-amd64.tar.gz | tar xvz
+    ./linux-amd64/helm version
+  """
+}
+
+def deploy(tag, ns) {
+  sh """
+    ./linux-amd64/helm upgrade petclinic-${ns} helm/charts/spring-petclinic-microservices -f deployment-configs/${ns}/values.yaml --namespace=petclinic-${ns} --set image.tag=${tag} --set image.changeCause=jenkins-${BUILD_ID}
+  """
 }
