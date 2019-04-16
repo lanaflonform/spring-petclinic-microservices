@@ -7,7 +7,6 @@ def projectname = "spring-petclinic-microservices"
 def revision = "2.1.3-SNAPSHOT"
 def dockerTag = env.BRANCH_NAME
 def targetNS = "preprod"
-def changeCause = "date"
 
 def credentials = [usernamePassword(credentialsId: 'jcsirot.docker.devoxxfr.chelonix.org', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]
 
@@ -109,7 +108,7 @@ spec:
           wget -qO- https://kubernetes-helm.storage.googleapis.com/helm-v2.13.1-linux-amd64.tar.gz | tar xvz
           ./linux-amd64/helm version
           echo "targetNS:${targetNS}"
-          ./linux-amd64/helm upgrade ${targetNS} helm/charts/spring-petclinic-microservices -f deployment-configs/${targetNS}/values.yaml --namespace=petclinic-${targetNS} --set image.tag=${dockerTag} --set image.changeCause=${changeCause}
+          ./linux-amd64/helm upgrade ${targetNS} helm/charts/spring-petclinic-microservices -f deployment-configs/${targetNS}/values.yaml --namespace=petclinic-${targetNS} --set image.tag=${dockerTag} --set "image.changeCause=jenkins \$(date)"
         """
         echo "Skipping app deployment since no tag has been found"
       }
