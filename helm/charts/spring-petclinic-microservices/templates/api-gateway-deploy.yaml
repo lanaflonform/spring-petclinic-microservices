@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   annotations:
     deployment.kubernetes.io/revision: "1"
+    kubernetes.io/change-cause: {{ .Values.image.changeCause | quote }}
     helm.sh/hook-weight: "20"
   generation: 1
   labels:
@@ -25,6 +26,8 @@ spec:
   template:
     metadata:
       creationTimestamp: null
+      annotations:
+        kubernetes.io/change-cause: {{ .Values.image.changeCause | quote }}
       labels:
         component: api-gateway
         app: petclinic

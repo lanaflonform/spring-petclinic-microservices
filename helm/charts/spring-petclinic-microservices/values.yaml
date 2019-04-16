@@ -13,6 +13,7 @@ image:
   traccingTag: toto
   prometheusTag: toto
   pullPolicy: Always
+  changeCause: "basic upgrade"
 
 nameOverride: ""
 fullnameOverride: ""

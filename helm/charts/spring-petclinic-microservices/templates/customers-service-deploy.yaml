@@ -2,6 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   annotations:
+    kubernetes.io/change-cause: {{ .Values.image.changeCause | quote }}
     deployment.kubernetes.io/revision: "1"
     helm.sh/hook-weight: "10"
   generation: 1
@@ -25,6 +26,8 @@ spec:
   template:
     metadata:
       creationTimestamp: null
+      annotations:
+        kubernetes.io/change-cause: {{ .Values.image.changeCause | quote }}
       labels:
         component: customers-service
         app: petclinic
