@@ -3,12 +3,14 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: petclinic-ingress
   labels:
     app.kubernetes.io/name: {{ include "spring-petclinic-microservices.name" . }}
     helm.sh/chart: {{ include "spring-petclinic-microservices.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
+    component: petclinic-ingress
+    app: petclinic
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}

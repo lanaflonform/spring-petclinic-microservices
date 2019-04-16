@@ -2,6 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   annotations:
+    kubernetes.io/change-cause: {{ .Values.image.changeCause | quote }}
     deployment.kubernetes.io/revision: "1"
     helm.sh/hook-weight: "2"
   generation: 1
@@ -24,6 +25,8 @@ spec:
     type: RollingUpdate
   template:
     metadata:
+      annotations:
+        kubernetes.io/change-cause: {{ .Values.image.changeCause | quote }}
       creationTimestamp: null
       labels:
         component: discovery-server
@@ -44,7 +47,7 @@ spec:
         - --spring.profiles.active=docker
         - --server.port=8761
         image: "{{ .Values.image.repository }}/spring-petclinic-discovery-server:{{ .Values.image.tag }}"
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: "Always"
         name: discovery-server
         ports:
         - containerPort: 8761
