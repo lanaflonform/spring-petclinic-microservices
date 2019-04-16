@@ -15,6 +15,7 @@ podTemplate(label: label, yaml: """
 apiVersion: v1
 kind: Pod
 spec:
+  serviceAccountName: ci-jenkins
   containers:
   - name: docker
     image: docker:19.03-rc
@@ -89,6 +90,15 @@ spec:
           }
         }
       } else {
+        sh """
+          wget -O kubectl https://storage.googleapis.com/kubernetes-release/release/v1.14.0/bin/linux/amd64/kubectl
+          chmod +x ./kubectl
+        """
+        sh """
+          wget -qO- https://kubernetes-helm.storage.googleapis.com/helm-v2.13.1-linux-amd64.tar.gz | tar xvz
+          ./linux-amd64/helm version
+          ./linux-amd64/helm install helm/charts/spring-petclinic-microservices -f deployment-configs/preprod/values.yaml --namespace=petclinic-preprod --set image.tag=${dockerTag}
+        """
         echo "Skipping app deployment since no tag has been found"
       }
     }
