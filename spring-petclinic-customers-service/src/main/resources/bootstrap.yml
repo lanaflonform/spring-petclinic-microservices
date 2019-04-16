@@ -12,7 +12,7 @@ spring:
       uri: http://config-server:8888
 eureka:
   instance:
-    hostname: api-gateway
-  client:
-    serviceUrl:
-      defaultZone: http://api-gateway:8080/eureka/
+    hostname: customers-service
+#  client:
+#    serviceUrl:
+#      defaultZone: http://api-gateway:8080/eureka/
