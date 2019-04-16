@@ -32,6 +32,10 @@ spec:
         component: admin-server
         app: petclinic
     spec:
+      initContainers:
+      - name: wait-before-start
+        image: busybox
+        command: ['sh', '-c', 'sleep 60']
       containers:
       - command:
         - ./dockerize
