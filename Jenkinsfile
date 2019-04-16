@@ -6,6 +6,7 @@ def projectname = "spring-petclinic-microservices"
 
 def revision = "2.1.3-SNAPSHOT"
 def dockerTag = env.BRANCH_NAME
+def targetNS = "preprod"
 
 def credentials = [usernamePassword(credentialsId: 'jcsirot.docker.devoxxfr.chelonix.org', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]
 
@@ -83,6 +84,7 @@ spec:
         if (env.TAG_NAME ==~ /v[0-9]\.[0-9]\.[0-9]/) {
           stage ("Deploy to Prod") {
             echo "Deploying app to production"
+            targetNS = "prod"
           }
         } else {
           stage ("Deploy to Preprod") {
@@ -90,6 +92,14 @@ spec:
           }
         }
       } else {
+        /*
+        this is an upgrade deployment process
+        you need to install the helm chart first for "prod and preprod"
+        helm install --name petclinic-preprod helm/charts/spring-petclinic-microservices \
+                     -f deployment-configs/preprod/values.yaml '--namespace=petclinic-preprod' \
+                     --set 'image.tag=2.1.3-compose-SNAPSHOT'
+        
+        */
         sh """
           wget -O kubectl https://storage.googleapis.com/kubernetes-release/release/v1.14.0/bin/linux/amd64/kubectl
           chmod +x ./kubectl
@@ -97,7 +107,8 @@ spec:
         sh """
           wget -qO- https://kubernetes-helm.storage.googleapis.com/helm-v2.13.1-linux-amd64.tar.gz | tar xvz
           ./linux-amd64/helm version
-          ./linux-amd64/helm install helm/charts/spring-petclinic-microservices -f deployment-configs/preprod/values.yaml --namespace=petclinic-preprod --set image.tag=${dockerTag}
+          echo "targetNS:${targetNS}"
+          ./linux-amd64/helm upgrade ${targetNS} helm/charts/spring-petclinic-microservices -f deployment-configs/${targetNS}/values.yaml --namespace=petclinic-${targetNS} --set image.tag=${dockerTag}
         """
         echo "Skipping app deployment since no tag has been found"
       }
