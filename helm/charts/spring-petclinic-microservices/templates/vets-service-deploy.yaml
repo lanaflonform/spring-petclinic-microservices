@@ -47,7 +47,7 @@ spec:
         - --spring.profiles.active=docker
         - --server.port=8083
         image: "{{ .Values.image.repository }}/spring-petclinic-vets-service:{{ .Values.image.tag }}"
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        imagePullPolicy: "Always"
         name: vets-service
         ports:
         - containerPort: 8083

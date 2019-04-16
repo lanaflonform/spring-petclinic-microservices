@@ -35,7 +35,7 @@ spec:
     spec:
       containers:
       - image: "{{ .Values.image.repository }}/spring-petclinic-config-server:{{ .Values.image.tag }}"
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        imagePullPolicy: "Always"
         name: config-server
         ports:
         - containerPort: 8888
