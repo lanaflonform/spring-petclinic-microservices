@@ -34,7 +34,7 @@ spec:
         - name: JAVA_OPTS
           value: -Djava.security.egd=file:/dev/./urandom
         image: openzipkin/zipkin
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: tracing-server
         ports:
         - containerPort: 9411

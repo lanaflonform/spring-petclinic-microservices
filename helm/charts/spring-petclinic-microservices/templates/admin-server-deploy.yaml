@@ -44,7 +44,7 @@ spec:
         - --spring.profiles.active=docker
         - --server.port=9090
         image: "{{ .Values.image.repository }}/spring-petclinic-admin-server:{{ .Values.image.tag }}"
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: admin-server
         ports:
         - containerPort: 9090

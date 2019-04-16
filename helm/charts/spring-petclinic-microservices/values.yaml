@@ -12,7 +12,7 @@ image:
   grafanaTag: toto
   traccingTag: toto
   prometheusTag: toto
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 nameOverride: ""
 fullnameOverride: ""

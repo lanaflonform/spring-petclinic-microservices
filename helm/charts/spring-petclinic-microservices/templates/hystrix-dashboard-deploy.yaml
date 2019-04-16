@@ -45,7 +45,7 @@ spec:
         - --spring.profiles.active=docker
         - --server.port=7979
         image: "{{ .Values.image.repository }}/spring-petclinic-hystrix-dashboard:{{ .Values.image.tag }}"
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: hystrix-dashboard
         ports:
         - containerPort: 7979

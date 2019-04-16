@@ -44,7 +44,7 @@ spec:
         - --spring.profiles.active=docker
         - --server.port=8761
         image: "{{ .Values.image.repository }}/spring-petclinic-discovery-server:{{ .Values.image.tag }}"
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: discovery-server
         ports:
         - containerPort: 8761

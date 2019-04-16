@@ -44,7 +44,7 @@ spec:
         - --spring.profiles.active=docker
         - --server.port=8080
         image: "{{ .Values.image.repository }}/spring-petclinic-api-gateway:{{ .Values.image.tag }}"
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: api-gateway
         ports:
         - containerPort: 8080
