@@ -4,7 +4,7 @@ def label = "petclinic-${UUID.randomUUID().toString()}"
 
 def projectname = "spring-petclinic-microservices"
 
-def revision = "2.1.3-SNAPSHOT"
+def revision = "2.4.0-SNAPSHOT"
 def dockerTag = env.BRANCH_NAME
 def targetNS = "preprod"
 
