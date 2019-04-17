@@ -102,6 +102,12 @@ spec:
             deploy(dockerTag, targetNS)
           }
         }
+      } else if (env.BRANCH_NAME ==~ /.*-preprod/​) {
+        stage ("Deploy to Preprod") {
+          echo "Deploying app to pre-production"
+          getHelm()
+          deploy(dockerTag, targetNS)
+        }
       } else {
         echo "Skipping app deployment since no tag has been found"
       }
