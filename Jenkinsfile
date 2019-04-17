@@ -102,7 +102,7 @@ spec:
             deploy(dockerTag, targetNS)
           }
         }
-      } else if (env.BRANCH_NAME ==~ /.*-preprod/​) {
+      } else if (env.BRANCH_NAME.endsWith("-preprod")) {
         stage ("Deploy to Preprod") {
           echo "Deploying app to pre-production"
           getHelm()
@@ -126,6 +126,6 @@ def getHelm() {
 
 def deploy(tag, ns) {
   sh """
-    ./linux-amd64/helm upgrade petclinic-${ns} helm/charts/spring-petclinic-microservices -f deployment-configs/${ns}/values.yaml --namespace=petclinic-${ns} --set image.tag=${tag} --set image.changeCause=jenkins-${BUILD_ID}
+    ./linux-amd64/helm upgrade petclinic-${ns} helm/charts/spring-petclinic-microservices -f deployment-configs/${ns}/values.yaml --namespace=petclinic-${ns} --set image.tag=${tag} --set image.changeCause=jenkins-${BUILD_ID} --recreate-pods
   """
 }
