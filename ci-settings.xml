@@ -1,6 +1,5 @@
-<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
                       https://maven.apache.org/xsd/settings-1.0.0.xsd">
   <profiles>
     <profile>
@@ -24,7 +23,7 @@
         </repository>
       </repositories>
       <pluginRepositories>
-        <repository>
+        <pluginRepository>
           <id>nexus-plugins</id>
           <name>Local Nexus repository</name>
           <releases>
@@ -39,7 +38,7 @@
           </snapshots>
           <url>http://nexus.devoxxfr.chelonix.org/repository/maven-central/</url>
           <layout>default</layout>
-        </repository>
+        </pluginRepository>
       </pluginRepositories>
     </profile>
   </profiles>
