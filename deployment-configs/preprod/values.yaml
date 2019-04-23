@@ -29,7 +29,7 @@ ingress:
       # nginx.ingress.kubernetes.io/auth-type: basic
       # nginx.ingress.kubernetes.io/auth-secret: sysop
       # nginx.ingress.kubernetes.io/auth-realm: "Authentication Required - ok"
-      kubernetes.io/ingress.global-static-ip-name: devoxx-petclinic-beta-ip
+      kubernetes.io/ingress.global-static-ip-name: petclinic-preprod-ip
       networking.gke.io/managed-certificates: petclinic-preprod.devoxxfr.chelonix.org,petclinic-adm-preprod.devoxxfr.chelonix.org
   hosts:
     hostAdminServer : petclinic-adm-preprod.devoxxfr.chelonix.org
